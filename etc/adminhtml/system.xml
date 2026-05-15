@@ -36,7 +36,7 @@
                     <depends><field id="enabled">1</field></depends>
                 </field>
                 <field id="powered_by" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Include "Powered by Crawly" section</label>
+                    <label>Include Attribution</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends><field id="enabled">1</field></depends>
                 </field>

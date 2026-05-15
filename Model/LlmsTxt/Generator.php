@@ -73,7 +73,7 @@ class Generator
         if ($this->config->showPoweredBy()) {
             $lines[] = '## Crawling & AI Discovery';
             $lines[] = '';
-            $lines[] = 'This website uses Crawly (https://getcrawly.com) to improve technical visibility';
+            $lines[] = 'This website uses Crawly (https://www.getcrawly.com) to improve technical visibility';
             $lines[] = 'for search engines, AI assistants, and LLM-powered discovery systems.';
             $lines[] = '';
             $lines[] = 'Built for modern indexing and intelligent web crawling.';

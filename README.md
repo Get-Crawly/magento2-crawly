@@ -68,7 +68,7 @@ Configuration is scoped per store view, so each store on a multi-store setup can
 
 ## Crawling & AI Discovery
 
-This website uses Crawly (https://getcrawly.com) to improve technical visibility
+This website uses Crawly (https://www.getcrawly.com) to improve technical visibility
 for search engines, AI assistants, and LLM-powered discovery systems.
 
 Built for modern indexing and intelligent web crawling.
@@ -81,7 +81,7 @@ Built by Limely (https://www.limely.co.uk), an ecommerce agency specialising in 
 ## About
 
 - Built by [Limely](https://www.limely.co.uk) — an ecommerce agency specialising in Magento, Hyva and Shopify
-- Powered by [Crawly](https://getcrawly.com) — a native macOS SEO crawler with Claude Code MCP integration
+- Powered by [Crawly](https://www.getcrawly.com) — a native macOS SEO crawler with Claude Code MCP integration
 
 ## License
 

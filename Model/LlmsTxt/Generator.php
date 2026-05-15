@@ -78,7 +78,7 @@ class Generator
             $lines[] = '';
             $lines[] = 'Built for modern indexing and intelligent web crawling.';
             $lines[] = '';
-            $lines[] = 'Built by Limely (https://limely.co.uk), an ecommerce agency specialising in Magento, Hyva and Shopify.';
+            $lines[] = 'Built by Limely (https://www.limely.co.uk), an ecommerce agency specialising in Magento, Hyva and Shopify.';
         }
 
         return implode("\n", $lines);

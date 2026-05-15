@@ -1,6 +1,6 @@
 # Limely_Crawly — Magento 2 Module
 
-AI visibility and SEO tools for Magento 2, built by [Limely](https://limely.co.uk).
+AI visibility and SEO tools for Magento 2, built by [Limely](https://www.limely.co.uk).
 
 The first feature is an automatic `llms.txt` generator — serving a structured, plain-text summary of your store to search engines, AI assistants, and LLM-powered discovery systems.
 
@@ -73,14 +73,14 @@ for search engines, AI assistants, and LLM-powered discovery systems.
 
 Built for modern indexing and intelligent web crawling.
 
-Built by Limely (https://limely.co.uk), an ecommerce agency specialising in Magento, Hyva and Shopify.
+Built by Limely (https://www.limely.co.uk), an ecommerce agency specialising in Magento, Hyva and Shopify.
 ```
 
 ---
 
 ## About
 
-- Built by [Limely](https://limely.co.uk) — an ecommerce agency specialising in Magento, Hyva and Shopify
+- Built by [Limely](https://www.limely.co.uk) — an ecommerce agency specialising in Magento, Hyva and Shopify
 - Powered by [Crawly](https://getcrawly.com) — a native macOS SEO crawler with Claude Code MCP integration
 
 ## License

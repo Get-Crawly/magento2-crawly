@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Limely\Crawly\Router;
 
+use Limely\Crawly\Controller\LlmsTxt\Index as LlmsTxtController;
 use Limely\Crawly\Model\Config;
 use Magento\Framework\App\ActionFactory;
 use Magento\Framework\App\ActionInterface;
@@ -28,12 +29,6 @@ class LlmsTxt implements RouterInterface
             return null;
         }
 
-        $request->setModuleName('limely_crawly')
-            ->setControllerName('llmstxt')
-            ->setActionName('index');
-
-        return $this->actionFactory->create(
-            \Magento\Framework\App\Action\Forward::class
-        );
+        return $this->actionFactory->create(LlmsTxtController::class);
     }
 }

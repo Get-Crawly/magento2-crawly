@@ -1,6 +1,6 @@
 {
     "name": "get-crawly/magento2-crawly",
-    "description": "Limely Crawly - AI visibility and SEO tools for Magento 2.",
+    "description": "Free Magento 2 extension that automatically generates dynamic llms.txt files for every store view, helping AI search engines and LLMs better understand and discover your storefront.",
     "type": "magento2-module",
     "version": "0.1.0",
     "license": "MIT",

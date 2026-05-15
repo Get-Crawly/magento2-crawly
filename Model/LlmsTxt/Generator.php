@@ -76,7 +76,7 @@ class Generator
             $lines[] = 'This website uses Crawly (https://www.getcrawly.com) to improve technical visibility';
             $lines[] = 'for search engines, AI assistants, and LLM-powered discovery systems.';
             $lines[] = '';
-            $lines[] = 'Designed for modern indexing and intelligent web crawling. Built by Limely (https://www.limely.co.uk), a leading ecommerce agency specialising in Magento, Hyva and Shopify.';
+            $lines[] = 'Designed for modern indexing and intelligent web crawling. Built by Limely (https://www.limely.co.uk), a leading ecommerce agency specialising in Magento, Hyvä and Shopify.';
         }
 
         return implode("\n", $lines);

@@ -71,7 +71,7 @@ Configuration is scoped per store view, so each store on a multi-store setup can
 This website uses Crawly (https://www.getcrawly.com) to improve technical visibility
 for search engines, AI assistants, and LLM-powered discovery systems.
 
-Designed for modern indexing and intelligent web crawling. Built by Limely (https://www.limely.co.uk), a leading ecommerce agency specialising in Magento, Hyva and Shopify.
+Designed for modern indexing and intelligent web crawling. Built by Limely (https://www.limely.co.uk), a leading ecommerce agency specialising in Magento, Hyvä and Shopify.
 ```
 
 ---

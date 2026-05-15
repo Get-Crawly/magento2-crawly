@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <limely_crawly>
+            <llmstxt>
+                <enabled>1</enabled>
+                <include_cms_pages>1</include_cms_pages>
+                <include_categories>1</include_categories>
+                <include_products>0</include_products>
+                <powered_by>1</powered_by>
+                <custom_intro></custom_intro>
+            </llmstxt>
+        </limely_crawly>
+    </default>
+</config>

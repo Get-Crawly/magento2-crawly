@@ -1,0 +1,20 @@
+{
+    "name": "limely/magento2-crawly",
+    "description": "Limely Crawly - AI visibility and SEO tools for Magento 2.",
+    "type": "magento2-module",
+    "version": "0.1.0",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.1",
+        "magento/framework": "*",
+        "magento/module-catalog": "*",
+        "magento/module-cms": "*",
+        "magento/module-store": "*"
+    },
+    "autoload": {
+        "files": ["registration.php"],
+        "psr-4": {
+            "Limely\\Crawly\\": ""
+        }
+    }
+}

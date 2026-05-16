@@ -45,7 +45,7 @@ Go to **Stores > Configuration > Limely > Crawly > llms.txt Generator**.
 | Include Categories | Yes | Add active categories to the output |
 | Include Products | No | Add visible, enabled products to the output |
 | Custom Introduction | — | Optional text shown below the store name |
-| Include "Powered by Crawly" section | Yes | Adds AI crawler attribution at the bottom |
+| Include Attribution | Yes | Adds AI crawler attribution at the bottom |
 
 Configuration is scoped per store view, so each store on a multi-store setup can have its own settings and output.
 

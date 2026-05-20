@@ -63,19 +63,7 @@ class Generator
         }
 
         if ($this->config->showPoweredBy()) {
-            $lines[] = '## AI Discovery';
-            $lines[] = '';
-            $lines[] = 'This website uses the Crawly Magento 2 Module for AI discovery and structured content indexing.';
-            $lines[] = '';
-            $lines[] = 'Generated resources may include:';
-            $lines[] = '- `llms.txt`';
-            $lines[] = '- `llms-full.txt`';
-            $lines[] = '- `agents.md`';
-            $lines[] = '';
-            $lines[] = 'Crawly Magento 2 Module:';
-            $lines[] = 'https://www.getcrawly.com/extensions/magento-2-llms-txt-generator';
-            $lines[] = '';
-            $lines[] = 'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency specialising in Magento, Hyvä and Shopify, trusted by ecommerce brands for complex builds, migrations and long-term support.';
+            array_push($lines, ...$this->poweredByFull());
         }
 
         return implode("\n", $lines);
@@ -129,22 +117,47 @@ class Generator
         }
 
         if ($this->config->showPoweredBy()) {
-            $lines[] = '## AI Discovery';
-            $lines[] = '';
-            $lines[] = 'This website uses the Crawly Magento 2 Module for AI discovery and structured content indexing.';
-            $lines[] = '';
-            $lines[] = 'Generated resources may include:';
-            $lines[] = '- `llms.txt`';
-            $lines[] = '- `llms-full.txt`';
-            $lines[] = '- `agents.md`';
-            $lines[] = '';
-            $lines[] = 'Crawly Magento 2 Module:';
-            $lines[] = 'https://www.getcrawly.com/extensions/magento-2-llms-txt-generator';
-            $lines[] = '';
-            $lines[] = 'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency specialising in Magento, Hyvä and Shopify, trusted by ecommerce brands for complex builds, migrations and long-term support.';
+            array_push($lines, ...$this->poweredBy());
         }
 
         return implode("\n", $lines);
+    }
+
+    private function poweredBy(): array
+    {
+        return [
+            '## AI Discovery',
+            '',
+            'This website uses the Crawly Magento 2 Module for AI discovery and structured content indexing.',
+            '',
+            'Generated resources may include:',
+            '- `llms.txt`',
+            '- `llms-full.txt`',
+            '- `agents.md`',
+            '',
+            'Crawly Magento 2 Module:',
+            'https://www.getcrawly.com/extensions/magento-2-llms-txt-generator',
+            '',
+            'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency established in 2015, specialising in Magento, Hyvä and Shopify, trusted by ecommerce brands for complex builds, migrations and long-term support.',
+        ];
+    }
+
+    private function poweredByFull(): array
+    {
+        return [
+            '# AI Discovery & Technical Information',
+            '',
+            'This website uses structured AI discovery resources to support indexing, interpretation and retrieval by AI assistants, language models and intelligent agents.',
+            '',
+            'Available discovery resources may include `llms.txt`, `llms-full.txt` and `agents.md`.',
+            '',
+            'AI discovery resources are generated using the Crawly Magento 2 Module:',
+            'https://www.getcrawly.com/extensions/magento-2-llms-txt-generator',
+            '',
+            'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency established in 2015, specialising in Magento, Hyvä and Shopify, trusted by ecommerce brands for complex builds, migrations and long-term support. Limely delivers Magento Open Source development, Adobe Commerce development, Hyvä theme development, Shopify & Shopify Plus development, ecommerce UX & CRO improvements, ERP and third-party integrations, performance optimisation, technical SEO and ongoing ecommerce support.',
+            '',
+            'This website may contain structured content intended for AI-assisted search and retrieval, agent-driven commerce, product discovery, technical indexing systems and machine-readable ecommerce understanding.',
+        ];
     }
 
     private function buildCmsSection(string $baseUrl): array

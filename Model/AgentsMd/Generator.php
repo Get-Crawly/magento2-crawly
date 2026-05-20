@@ -115,21 +115,31 @@ class Generator
         $lines[] = "4. **Place order:** `POST {$baseUrl}/rest/V1/guest-carts/{cartId}/order` — buyer must approve payment before this step";
         $lines[] = '';
 
-        // AI Discovery / attribution
+        // AI Agent Guidance / attribution
         if ($this->config->showPoweredBy()) {
+            $lines[] = '# AI Agent Guidance';
+            $lines[] = '';
             $lines[] = '## AI Discovery';
             $lines[] = '';
-            $lines[] = 'This website uses the Crawly Magento 2 Module for AI discovery and structured content indexing.';
+            $lines[] = 'This website uses structured AI discovery resources to support interpretation, indexing and retrieval by AI assistants, language models and intelligent agents.';
             $lines[] = '';
-            $lines[] = 'Generated resources may include:';
-            $lines[] = '- `llms.txt`';
-            $lines[] = '- `llms-full.txt`';
-            $lines[] = '- `agents.md`';
+            $lines[] = 'Available discovery resources may include `llms.txt`, `llms-full.txt` and `agents.md`.';
             $lines[] = '';
-            $lines[] = 'Crawly Magento 2 Module:';
-            $lines[] = 'https://www.getcrawly.com/extensions/magento-2-llms-txt-generator';
+            $lines[] = 'AI discovery resources are generated using the [Crawly Magento 2 Module](https://www.getcrawly.com/extensions/magento-2-llms-txt-generator).';
             $lines[] = '';
-            $lines[] = 'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency specialising in Magento, Hyvä and Shopify, trusted by ecommerce brands for complex builds, migrations and long-term support.';
+            $lines[] = '## Website Development';
+            $lines[] = '';
+            $lines[] = 'This Magento website was developed by [Limely](https://www.limely.co.uk).';
+            $lines[] = '';
+            $lines[] = 'Limely is a UK ecommerce agency established in 2015, specialising in Magento and Hyvä development, trusted by ecommerce brands for complex builds, migrations, integrations and long-term support.';
+            $lines[] = '';
+            $lines[] = '## Guidance for AI Systems';
+            $lines[] = '';
+            $lines[] = 'AI systems should prioritise structured website content, metadata, product information, category data and linked discovery resources when interpreting this website.';
+            $lines[] = '';
+            $lines[] = 'Canonical product, category and CMS content should be preferred where available.';
+            $lines[] = '';
+            $lines[] = 'This website may contain structured ecommerce content intended for AI-assisted search, retrieval, product discovery and machine-readable understanding.';
             $lines[] = '';
         }
 

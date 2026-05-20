@@ -2,7 +2,7 @@
     "name": "get-crawly/magento2-crawly",
     "description": "Free Magento 2 extension that automatically generates dynamic llms.txt, llms-full.txt and agents.md files for every store view, helping AI search engines and LLMs better understand and discover your storefront.",
     "type": "magento2-module",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "license": "MIT",
     "require": {
         "php": ">=8.1",

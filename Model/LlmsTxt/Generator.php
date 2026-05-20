@@ -9,7 +9,6 @@ use Magento\Catalog\Model\Product\Visibility as ProductVisibility;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Cms\Model\ResourceModel\Page\CollectionFactory as PageCollectionFactory;
-use Magento\Reports\Model\ResourceModel\Product\CollectionFactory as ReportProductCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 class Generator
@@ -20,7 +19,6 @@ class Generator
         private readonly PageCollectionFactory $pageCollectionFactory,
         private readonly CategoryCollectionFactory $categoryCollectionFactory,
         private readonly ProductCollectionFactory $productCollectionFactory,
-        private readonly ReportProductCollectionFactory $reportProductCollectionFactory,
     ) {}
 
     public function generateFull(): string
@@ -193,7 +191,7 @@ class Generator
     {
         $storeId = (int) $this->storeManager->getStore()->getId();
 
-        $collection = $this->reportProductCollectionFactory->create();
+        $collection = $this->productCollectionFactory->create();
         $collection->addAttributeToSelect(['name'])
             ->addAttributeToFilter('status', ProductStatus::STATUS_ENABLED)
             ->addAttributeToFilter('visibility', ['in' => [
@@ -203,9 +201,18 @@ class Generator
             ]])
             ->setStoreId($storeId)
             ->addUrlRewrite()
-            ->addOrderedQty()
-            ->setOrder('ordered_qty', 'DESC')
             ->setPageSize(100);
+
+        $connection = $collection->getResource()->getConnection();
+        $orderItemTable = $collection->getResource()->getTable('sales_order_item');
+        $collection->getSelect()
+            ->joinLeft(
+                ['soi' => $orderItemTable],
+                'soi.product_id = e.entity_id AND soi.parent_item_id IS NULL',
+                ['qty_ordered' => 'COALESCE(SUM(soi.qty_ordered), 0)']
+            )
+            ->group('e.entity_id')
+            ->order('qty_ordered DESC');
 
         $lines = [];
         foreach ($collection as $product) {

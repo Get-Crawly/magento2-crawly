@@ -103,17 +103,19 @@ class Generator
         $lines[] = '';
 
         // Transacting
-        $lines[] = '## Transacting';
-        $lines[] = '';
-        $lines[] = 'Checkout requires explicit human approval. Agents must not complete payment without buyer consent.';
-        $lines[] = '';
-        $lines[] = 'To transact as a guest:';
-        $lines[] = '';
-        $lines[] = "1. **Create cart:** `POST {$baseUrl}/rest/V1/guest-carts`";
-        $lines[] = "2. **Add item:** `POST {$baseUrl}/rest/V1/guest-carts/{cartId}/items`";
-        $lines[] = "3. **Set address:** `POST {$baseUrl}/rest/V1/guest-carts/{cartId}/shipping-information`";
-        $lines[] = "4. **Place order:** `POST {$baseUrl}/rest/V1/guest-carts/{cartId}/order` — buyer must approve payment before this step";
-        $lines[] = '';
+        if ($anonRest) {
+            $lines[] = '## Transacting';
+            $lines[] = '';
+            $lines[] = 'Checkout requires explicit human approval. Agents must not complete payment without buyer consent.';
+            $lines[] = '';
+            $lines[] = 'To transact as a guest:';
+            $lines[] = '';
+            $lines[] = "1. **Create cart:** `POST {$baseUrl}/rest/V1/guest-carts`";
+            $lines[] = "2. **Add item:** `POST {$baseUrl}/rest/V1/guest-carts/{cartId}/items`";
+            $lines[] = "3. **Set address:** `POST {$baseUrl}/rest/V1/guest-carts/{cartId}/shipping-information`";
+            $lines[] = "4. **Place order:** `POST {$baseUrl}/rest/V1/guest-carts/{cartId}/order` — buyer must approve payment before this step";
+            $lines[] = '';
+        }
 
         // AI Agent Guidance / attribution
         if ($this->config->showPoweredBy()) {

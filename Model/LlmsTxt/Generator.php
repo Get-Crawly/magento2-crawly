@@ -8,8 +8,8 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Catalog\Model\Product\Visibility as ProductVisibility;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
-use Magento\Cms\Api\PageRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Cms\Model\ResourceModel\Page\CollectionFactory as PageCollectionFactory;
+use Magento\Reports\Model\ResourceModel\Product\CollectionFactory as ReportProductCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
 
 class Generator
@@ -17,11 +17,68 @@ class Generator
     public function __construct(
         private readonly Config $config,
         private readonly StoreManagerInterface $storeManager,
-        private readonly PageRepositoryInterface $pageRepository,
-        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+        private readonly PageCollectionFactory $pageCollectionFactory,
         private readonly CategoryCollectionFactory $categoryCollectionFactory,
         private readonly ProductCollectionFactory $productCollectionFactory,
+        private readonly ReportProductCollectionFactory $reportProductCollectionFactory,
     ) {}
+
+    public function generateFull(): string
+    {
+        $store = $this->storeManager->getStore();
+        $baseUrl = rtrim((string) $store->getBaseUrl(), '/');
+        $storeName = $store->getName();
+
+        $lines = [];
+
+        $lines[] = "# {$storeName}";
+        $lines[] = '';
+
+        $intro = $this->config->getCustomIntro();
+        if ($intro !== '') {
+            $lines[] = $intro;
+            $lines[] = '';
+        }
+
+        $cmsSection = $this->buildCmsSection($baseUrl);
+        if ($cmsSection) {
+            $lines[] = '## Pages';
+            $lines[] = '';
+            array_push($lines, ...$cmsSection);
+            $lines[] = '';
+        }
+
+        $categorySection = $this->buildCategorySection();
+        if ($categorySection) {
+            $lines[] = '## Categories';
+            $lines[] = '';
+            array_push($lines, ...$categorySection);
+            $lines[] = '';
+        }
+
+        $productSection = $this->buildBestSellersSection();
+        if ($productSection) {
+            $lines[] = '## Products';
+            $lines[] = '';
+            array_push($lines, ...$productSection);
+            $lines[] = '';
+        }
+
+        if ($this->config->showPoweredBy()) {
+            $lines[] = '## AI Discovery';
+            $lines[] = '';
+            $lines[] = 'This website uses Crawly (https://www.getcrawly.com) to support AI discovery and structured content indexing for language models and intelligent agents.';
+            $lines[] = '';
+            $lines[] = 'Generated resources:';
+            $lines[] = '- `llms.txt`';
+            $lines[] = '- `llms-full.txt`';
+            $lines[] = '- `agents.md`';
+            $lines[] = '';
+            $lines[] = 'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency specialising in Magento, Hyvä and Shopify.';
+        }
+
+        return implode("\n", $lines);
+    }
 
     public function generate(): string
     {
@@ -71,12 +128,16 @@ class Generator
         }
 
         if ($this->config->showPoweredBy()) {
-            $lines[] = '## Crawling & AI Discovery';
+            $lines[] = '## AI Discovery';
             $lines[] = '';
-            $lines[] = 'This website uses Crawly (https://www.getcrawly.com) to improve technical visibility';
-            $lines[] = 'for search engines, AI assistants, and LLM-powered discovery systems.';
+            $lines[] = 'This website uses Crawly (https://www.getcrawly.com) to support AI discovery and structured content indexing for language models and intelligent agents.';
             $lines[] = '';
-            $lines[] = 'Designed for modern indexing and intelligent web crawling. Built by Limely (https://www.limely.co.uk), a leading ecommerce agency specialising in Magento, Hyvä and Shopify.';
+            $lines[] = 'Generated resources:';
+            $lines[] = '- `llms.txt`';
+            $lines[] = '- `llms-full.txt`';
+            $lines[] = '- `agents.md`';
+            $lines[] = '';
+            $lines[] = 'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency specialising in Magento, Hyvä and Shopify.';
         }
 
         return implode("\n", $lines);
@@ -85,15 +146,14 @@ class Generator
     private function buildCmsSection(string $baseUrl): array
     {
         $skipIdentifiers = ['no-route', 'home', '404', 'no_route', 'enable-cookies', 'privacy-policy-cookie-restriction-mode'];
+        $storeId = (int) $this->storeManager->getStore()->getId();
 
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('is_active', 1)
-            ->create();
-
-        $pages = $this->pageRepository->getList($searchCriteria)->getItems();
+        $collection = $this->pageCollectionFactory->create();
+        $collection->addFieldToFilter('is_active', 1)
+            ->addStoreFilter($storeId);
 
         $lines = [];
-        foreach ($pages as $page) {
+        foreach ($collection as $page) {
             $identifier = ltrim($page->getIdentifier(), '/');
             if (in_array($identifier, $skipIdentifiers, true)) {
                 continue;
@@ -129,7 +189,42 @@ class Generator
         return $lines;
     }
 
-    private function buildProductSection(): array
+    private function buildBestSellersSection(): array
+    {
+        $storeId = (int) $this->storeManager->getStore()->getId();
+
+        $collection = $this->reportProductCollectionFactory->create();
+        $collection->addAttributeToSelect(['name'])
+            ->addAttributeToFilter('status', ProductStatus::STATUS_ENABLED)
+            ->addAttributeToFilter('visibility', ['in' => [
+                ProductVisibility::VISIBILITY_IN_CATALOG,
+                ProductVisibility::VISIBILITY_IN_SEARCH,
+                ProductVisibility::VISIBILITY_BOTH,
+            ]])
+            ->setStoreId($storeId)
+            ->addUrlRewrite()
+            ->addOrderedQty()
+            ->setOrder('ordered_qty', 'DESC')
+            ->setPageSize(100);
+
+        $lines = [];
+        foreach ($collection as $product) {
+            $url = $product->getProductUrl();
+            $name = $product->getName();
+            if ($url && $name) {
+                $lines[] = "- [{$name}]({$url})";
+            }
+        }
+
+        if (!empty($lines)) {
+            return $lines;
+        }
+
+        // Fallback: no sales data — return 100 newest products
+        return $this->buildProductSection(100);
+    }
+
+    private function buildProductSection(int $pageSize = 500): array
     {
         $storeId = (int) $this->storeManager->getStore()->getId();
 
@@ -142,8 +237,11 @@ class Generator
                 ProductVisibility::VISIBILITY_BOTH,
             ]])
             ->setStoreId($storeId)
-            ->addUrlRewrite()
-            ->setPageSize(500);
+            ->addUrlRewrite();
+
+        if ($pageSize > 0) {
+            $collection->setPageSize($pageSize);
+        }
 
         $lines = [];
         foreach ($collection as $product) {

@@ -4,10 +4,10 @@
     <type name="Magento\Framework\App\RouterList">
         <arguments>
             <argument name="routerList" xsi:type="array">
-                <item name="limely_crawly_llmstxt" xsi:type="array">
-                    <item name="class" xsi:type="string">Limely\Crawly\Router\LlmsTxt</item>
+                <item name="limely_crawly" xsi:type="array">
+                    <item name="class" xsi:type="string">Limely\Crawly\Router\Crawly</item>
                     <item name="disable" xsi:type="boolean">false</item>
-                    <item name="sortOrder" xsi:type="string">21</item>
+                    <item name="sortOrder" xsi:type="number">21</item>
                 </item>
             </argument>
         </arguments>

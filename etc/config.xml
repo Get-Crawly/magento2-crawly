@@ -11,6 +11,11 @@
                 <powered_by>1</powered_by>
                 <custom_intro></custom_intro>
             </llmstxt>
+            <agentsmd>
+                <enabled>1</enabled>
+                <custom_intro></custom_intro>
+                <custom_content></custom_content>
+            </agentsmd>
         </limely_crawly>
     </default>
 </config>

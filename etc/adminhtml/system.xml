@@ -35,9 +35,27 @@
                     <comment>Appears at the top of llms.txt after the store name. Leave blank to use the default.</comment>
                     <depends><field id="enabled">1</field></depends>
                 </field>
-                <field id="powered_by" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="powered_by" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Include Attribution</label>
+                    <comment>Adds an AI Discovery section crediting Crawly and Limely. Applies to llms.txt, llms-full.txt and agents.md.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
+            </group>
+            <group id="agentsmd" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>agents.md Generator</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="custom_intro" translate="label comment" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Introduction</label>
+                    <comment>Optional text inserted after the store name heading, before the auto-generated content.</comment>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
+                <field id="custom_content" translate="label comment" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Content</label>
+                    <comment>Appended at the end of agents.md. Use markdown. Good for contact details, brand notes, or agent-specific instructions.</comment>
                     <depends><field id="enabled">1</field></depends>
                 </field>
             </group>

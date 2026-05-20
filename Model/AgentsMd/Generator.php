@@ -93,7 +93,10 @@ class Generator
         $lines[] = '';
         $lines[] = '### Store Resources';
         $lines[] = '';
-        $lines[] = "- [Sitemap]({$baseUrl}/sitemap.xml)";
+        $sitemapUrl = $this->config->getSitemapUrl($baseUrl);
+        if ($sitemapUrl) {
+            $lines[] = "- [Sitemap]({$sitemapUrl})";
+        }
         $lines[] = "- [`llms.txt`]({$baseUrl}/llms.txt) — structured content summary for language models";
         $lines[] = "- [`llms-full.txt`]({$baseUrl}/llms-full.txt) — full product and category listing";
         $lines[] = "- [`agents.md`]({$baseUrl}/agents.md) — this document";

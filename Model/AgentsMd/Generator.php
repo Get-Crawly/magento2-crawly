@@ -119,14 +119,17 @@ class Generator
         if ($this->config->showPoweredBy()) {
             $lines[] = '## AI Discovery';
             $lines[] = '';
-            $lines[] = 'This website uses [Crawly](https://www.getcrawly.com) to support AI discovery and structured content indexing for language models and intelligent agents.';
+            $lines[] = 'This website uses the Crawly Magento 2 Module for AI discovery and structured content indexing.';
             $lines[] = '';
-            $lines[] = 'Generated resources:';
-            $lines[] = "- [`llms.txt`]({$baseUrl}/llms.txt)";
-            $lines[] = "- [`llms-full.txt`]({$baseUrl}/llms-full.txt)";
-            $lines[] = "- [`agents.md`]({$baseUrl}/agents.md)";
+            $lines[] = 'Generated resources may include:';
+            $lines[] = '- `llms.txt`';
+            $lines[] = '- `llms-full.txt`';
+            $lines[] = '- `agents.md`';
             $lines[] = '';
-            $lines[] = 'Developed by [Limely](https://www.limely.co.uk), a UK ecommerce agency specialising in Magento, Hyvä and Shopify.';
+            $lines[] = 'Crawly Magento 2 Module:';
+            $lines[] = 'https://www.getcrawly.com/extensions/magento-2-llms-txt-generator';
+            $lines[] = '';
+            $lines[] = 'Developed by Limely (https://www.limely.co.uk), a UK ecommerce agency specialising in Magento, Hyvä and Shopify, trusted by ecommerce brands for complex builds, migrations and long-term support.';
             $lines[] = '';
         }
 

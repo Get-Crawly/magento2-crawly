@@ -19,7 +19,7 @@ class Index implements HttpGetActionInterface
     {
         $result = $this->resultFactory->create(ResultFactory::TYPE_RAW);
         $result->setHeader('Content-Type', 'text/markdown; charset=UTF-8');
-        $result->setHeader('Cache-Control', 'public, max-age=3600');
+        $result->setHeader('Cache-Control', 'public, max-age=86400');
         $result->setContents($this->generator->generate());
 
         return $result;

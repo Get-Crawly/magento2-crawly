@@ -19,7 +19,7 @@ class Full implements HttpGetActionInterface
     {
         $result = $this->resultFactory->create(ResultFactory::TYPE_RAW);
         $result->setHeader('Content-Type', 'text/plain; charset=UTF-8');
-        $result->setHeader('Cache-Control', 'public, max-age=3600');
+        $result->setHeader('Cache-Control', 'public, max-age=86400');
         $result->setContents($this->generator->generateFull());
 
         return $result;

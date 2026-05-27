@@ -17,7 +17,7 @@ class Generator
     {
         $store = $this->storeManager->getStore();
         $baseUrl = rtrim((string) $store->getBaseUrl(), '/');
-        $storeName = $store->getName();
+        $storeName = $store->getWebsite()->getName();
         $isHyva = $this->config->isHyvaTheme();
         $anonRest = $this->config->isAnonymousRestAllowed();
 

@@ -25,7 +25,7 @@ class Generator
     {
         $store = $this->storeManager->getStore();
         $baseUrl = rtrim((string) $store->getBaseUrl(), '/');
-        $storeName = $store->getName();
+        $storeName = $store->getWebsite()->getName();
 
         $lines = [];
 
@@ -73,7 +73,7 @@ class Generator
     {
         $store = $this->storeManager->getStore();
         $baseUrl = rtrim((string) $store->getBaseUrl(), '/');
-        $storeName = $store->getName();
+        $storeName = $store->getWebsite()->getName();
 
         $lines = [];
 

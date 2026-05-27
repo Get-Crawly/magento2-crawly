@@ -46,7 +46,7 @@ class Generator
             $lines[] = '';
         }
 
-        $categorySection = $this->buildCategorySection();
+        $categorySection = $this->buildCategorySection($baseUrl);
         if ($categorySection) {
             $lines[] = '## Categories';
             $lines[] = '';
@@ -97,7 +97,7 @@ class Generator
         }
 
         if ($this->config->includeCategories()) {
-            $section = $this->buildCategorySection();
+            $section = $this->buildCategorySection($baseUrl);
             if ($section) {
                 $lines[] = '## Categories';
                 $lines[] = '';
@@ -183,7 +183,7 @@ class Generator
         return $lines;
     }
 
-    private function buildCategorySection(): array
+    private function buildCategorySection(string $baseUrl): array
     {
         $storeId = (int) $this->storeManager->getStore()->getId();
 
@@ -196,11 +196,13 @@ class Generator
 
         $lines = [];
         foreach ($collection as $category) {
-            $url = $category->getUrl();
+            $requestPath = $category->getRequestPath();
             $name = $category->getName();
-            if ($url && $name) {
-                $lines[] = "- [{$name}]({$url})";
+            if (!$requestPath || !$name) {
+                continue;
             }
+            $url = $baseUrl . '/' . ltrim($requestPath, '/');
+            $lines[] = "- [{$name}]({$url})";
         }
 
         return $lines;

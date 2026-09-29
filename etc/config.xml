@@ -8,6 +8,8 @@
                 <include_cms_pages>1</include_cms_pages>
                 <include_categories>1</include_categories>
                 <include_products>0</include_products>
+                <include_best_sellers>1</include_best_sellers>
+                <best_sellers_days>90</best_sellers_days>
                 <powered_by>1</powered_by>
                 <custom_intro></custom_intro>
             </llmstxt>

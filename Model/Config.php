@@ -15,6 +15,8 @@ class Config
     private const XML_PATH_CMS_PAGES                = 'limely_crawly/llmstxt/include_cms_pages';
     private const XML_PATH_CATEGORIES               = 'limely_crawly/llmstxt/include_categories';
     private const XML_PATH_PRODUCTS                 = 'limely_crawly/llmstxt/include_products';
+    private const XML_PATH_BEST_SELLERS             = 'limely_crawly/llmstxt/include_best_sellers';
+    private const XML_PATH_BEST_SELLERS_DAYS        = 'limely_crawly/llmstxt/best_sellers_days';
     private const XML_PATH_POWERED_BY               = 'limely_crawly/llmstxt/powered_by';
     private const XML_PATH_CUSTOM_INTRO             = 'limely_crawly/llmstxt/custom_intro';
     private const XML_PATH_AGENTS_MD_ENABLED        = 'limely_crawly/agentsmd/enabled';
@@ -49,6 +51,16 @@ class Config
     public function includeProducts(): bool
     {
         return $this->scopeConfig->isSetFlag(self::XML_PATH_PRODUCTS, ScopeInterface::SCOPE_STORE);
+    }
+
+    public function includeBestSellers(): bool
+    {
+        return $this->scopeConfig->isSetFlag(self::XML_PATH_BEST_SELLERS, ScopeInterface::SCOPE_STORE);
+    }
+
+    public function getBestSellersDays(): int
+    {
+        return max(0, (int) $this->scopeConfig->getValue(self::XML_PATH_BEST_SELLERS_DAYS, ScopeInterface::SCOPE_STORE));
     }
 
     public function showPoweredBy(): bool

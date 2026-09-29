@@ -9,6 +9,7 @@ use Magento\Catalog\Model\Product\Visibility as ProductVisibility;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Cms\Model\ResourceModel\Page\CollectionFactory as PageCollectionFactory;
+use Magento\Framework\App\ResourceConnection;
 use Magento\Store\Model\StoreManagerInterface;
 
 class Generator
@@ -19,6 +20,7 @@ class Generator
         private readonly PageCollectionFactory $pageCollectionFactory,
         private readonly CategoryCollectionFactory $categoryCollectionFactory,
         private readonly ProductCollectionFactory $productCollectionFactory,
+        private readonly ResourceConnection $resourceConnection,
     ) {}
 
     public function generateFull(): string
@@ -210,10 +212,21 @@ class Generator
 
     private function buildBestSellersSection(): array
     {
+        if (!$this->config->includeBestSellers()) {
+            return $this->buildProductSection(100);
+        }
+
+        $productIds = $this->getBestSellerProductIds();
+        if (!$productIds) {
+            // Fallback: no sales data — return 100 newest products
+            return $this->buildProductSection(100);
+        }
+
         $storeId = (int) $this->storeManager->getStore()->getId();
 
         $collection = $this->productCollectionFactory->create();
         $collection->addAttributeToSelect(['name'])
+            ->addIdFilter($productIds)
             ->addAttributeToFilter('status', ProductStatus::STATUS_ENABLED)
             ->addAttributeToFilter('visibility', ['in' => [
                 ProductVisibility::VISIBILITY_IN_CATALOG,
@@ -221,35 +234,61 @@ class Generator
                 ProductVisibility::VISIBILITY_BOTH,
             ]])
             ->setStoreId($storeId)
-            ->addUrlRewrite()
-            ->setPageSize(100);
+            ->addUrlRewrite();
 
-        $connection = $collection->getResource()->getConnection();
-        $orderItemTable = $collection->getResource()->getTable('sales_order_item');
-        $collection->getSelect()
-            ->joinLeft(
-                ['soi' => $orderItemTable],
-                'soi.product_id = e.entity_id AND soi.parent_item_id IS NULL',
-                ['qty_ordered' => 'COALESCE(SUM(soi.qty_ordered), 0)']
-            )
-            ->group('e.entity_id')
-            ->order('qty_ordered DESC');
+        // Preserve best-seller ordering from the sales aggregate
+        $rank = array_flip($productIds);
+        $products = $collection->getItems();
+        uasort($products, static fn ($a, $b) => $rank[$a->getId()] <=> $rank[$b->getId()]);
 
         $lines = [];
-        foreach ($collection as $product) {
+        foreach ($products as $product) {
             $url = $product->getProductUrl();
             $name = $product->getName();
             if ($url && $name) {
                 $lines[] = "- [{$name}]({$url})";
             }
+            if (count($lines) >= 100) {
+                break;
+            }
         }
 
-        if (!empty($lines)) {
-            return $lines;
+        return $lines ?: $this->buildProductSection(100);
+    }
+
+    /**
+     * Aggregate sales directly on the order tables, limited by the configured
+     * lookback window, rather than joining the catalog onto sales_order_item.
+     *
+     * @return int[]
+     */
+    private function getBestSellerProductIds(): array
+    {
+        $connection = $this->resourceConnection->getConnection('sales');
+
+        $select = $connection->select()
+            ->from(
+                ['soi' => $this->resourceConnection->getTableName('sales_order_item', 'sales')],
+                ['product_id']
+            )
+            ->where('soi.store_id IN (?)', array_map('intval', $this->storeManager->getWebsite()->getStoreIds()))
+            ->where('soi.parent_item_id IS NULL')
+            ->where('soi.product_id IS NOT NULL')
+            ->group('soi.product_id')
+            ->order(new \Zend_Db_Expr('SUM(soi.qty_ordered) DESC'))
+            // Over-fetch to allow for disabled / not-visible products being filtered out
+            ->limit(300);
+
+        $days = $this->config->getBestSellersDays();
+        if ($days > 0) {
+            $select->join(
+                ['so' => $this->resourceConnection->getTableName('sales_order', 'sales')],
+                'so.entity_id = soi.order_id',
+                []
+            )->where('so.created_at >= ?', gmdate('Y-m-d H:i:s', time() - $days * 86400));
         }
 
-        // Fallback: no sales data — return 100 newest products
-        return $this->buildProductSection(100);
+        return array_map('intval', $connection->fetchCol($select));
     }
 
     private function buildProductSection(int $pageSize = 500): array

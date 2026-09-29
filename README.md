@@ -9,7 +9,7 @@ Automatically serves `llms.txt`, `llms-full.txt`, and `agents.md` — structured
 ## Features
 
 - Serves `/llms.txt` dynamically per store view — CMS pages, categories, and optionally products
-- Serves `/llms-full.txt` — top 100 best-selling products (falls back to newest 100 on stores with no sales data), plus all categories and CMS pages
+- Serves `/llms-full.txt` — top 100 best-selling products over a configurable period (falls back to 100 catalog products when disabled or no sales data), plus all categories and CMS pages
 - Serves `/agents.md` — agent instructions including platform info, Hyvä detection, REST API / GraphQL endpoints (shown or hidden based on your anonymous access setting), transacting steps, and custom content
 - Full multi-store support — all output and configuration is scoped per store view
 - Hyvä theme detection per store view — walks the full theme parent chain, so child themes built on Hyvä are correctly detected
@@ -51,6 +51,8 @@ bin/magento cache:flush
 | Include CMS Pages | Yes | Add active CMS pages scoped to the current store view |
 | Include Categories | Yes | Add active categories |
 | Include Products | No | Add visible, enabled products (up to 500) |
+| Best Sellers in llms-full.txt | Yes | Order `llms-full.txt` products by quantity sold. Disable on very large stores if generation is slow |
+| Best Sellers Period (Days) | 90 | Only count orders from the last N days. `0` = all time |
 | Custom Introduction | — | Optional text shown below the store name |
 | Include Attribution | Yes | Appends an AI Discovery section — content differs per file |
 
@@ -74,7 +76,7 @@ A structured plain-text summary of your store for language models — store name
 
 ### `/llms-full.txt`
 
-A full content listing — all CMS pages, all categories, and the top 100 best-selling products ordered by quantity sold. Falls back to the 100 newest products on stores with no sales data.
+A full content listing — all CMS pages, all categories, and the top 100 best-selling products ordered by quantity sold across the current website over the configured period (default 90 days). Falls back to 100 catalog products when best sellers are disabled or there is no sales data in the period.
 
 ### `/agents.md`
 
